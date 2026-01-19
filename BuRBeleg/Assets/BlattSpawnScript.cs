@@ -42,8 +42,8 @@ public class BlattSpawnScript : MonoBehaviour
     void spawnLeaf(float heightOffset, float widthOffset)
     {
         Vector3 pos = new Vector3(
-            Random.Range(-8f, -4f),     //Koordinaten breite Baumkrone
-            Random.Range(2.7f, -1.7f),  //Koordinaten Höhe Baumkrone
+            Random.Range(-11f, -5.2f),     //Koordinaten breite Baumkrone
+            Random.Range(2.7f, -1.14f),  //Koordinaten Höhe Baumkrone
             0
         );
 

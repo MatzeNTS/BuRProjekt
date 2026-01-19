@@ -15,9 +15,9 @@ public class LogicManagerScript : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) == true)
         {
-            /*Vector3 mousePos = Input.mousePosition;
-            Debug.Log("Klick bei:" + mousePos.x);
-            Debug.Log("Klick bei:" + mousePos.y);*/
+            Vector3 mousePos = Input.mousePosition;
+            Debug.Log("Klick bei x:" + mousePos.x);
+            Debug.Log("Klick bei y:" + mousePos.y);
 
             foreach (BlattBehaviourScript blatt in FindObjectsOfType<BlattBehaviourScript>())
             {

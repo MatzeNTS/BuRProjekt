@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 
 public class BlattBehaviourScript : MonoBehaviour
@@ -40,5 +41,10 @@ public class BlattBehaviourScript : MonoBehaviour
     public void enableBlattGravity(float gravity = 1f)
     {
         BlattBody.gravityScale = gravity;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log("Bodenkontakt");
     }
 }
