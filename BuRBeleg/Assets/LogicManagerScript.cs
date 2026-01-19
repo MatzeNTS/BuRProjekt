@@ -2,13 +2,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+
 public class LogicManagerScript : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    private int playerScore;
+    public Text scoreText;
+    public GameObject StartMenu;
+
+
+
+
 
     // Update is called once per frame
     void Update()
@@ -25,5 +28,13 @@ public class LogicManagerScript : MonoBehaviour
             }
 
         }
+    }
+
+    [ContextMenu("Score Increase")]
+    public void AddScore(int scoreToAdd = 1)
+    {
+        playerScore += scoreToAdd;
+        scoreText.text = playerScore.ToString();
+        Debug.Log("Score hinzugefügt");
     }
 }

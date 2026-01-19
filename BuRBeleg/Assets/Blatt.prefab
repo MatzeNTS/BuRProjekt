@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8029567930103918849}
   m_Layer: 0
   m_Name: Blatt
-  m_TagString: Untagged
+  m_TagString: Blatt
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

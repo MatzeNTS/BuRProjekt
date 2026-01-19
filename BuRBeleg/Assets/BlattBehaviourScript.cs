@@ -17,7 +17,6 @@ public class BlattBehaviourScript : MonoBehaviour
         var sr = GetComponent<SpriteRenderer>();
         sr.sortingOrder = Random.Range(0, 1000);
 
-        Debug.Log("Before physics: " + transform.position);
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -43,8 +42,17 @@ public class BlattBehaviourScript : MonoBehaviour
         BlattBody.gravityScale = gravity;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("Bodenkontakt");
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Boden")) {
+            Debug.Log("Bodenkontakt");
+            Invoke("BlattDestruction", 4f); 
+        }
+ 
+    }
+
+    void BlattDestruction()
+    {
+        Destroy(gameObject);
     }
 }
