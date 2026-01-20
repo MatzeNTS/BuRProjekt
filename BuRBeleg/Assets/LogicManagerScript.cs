@@ -1,6 +1,8 @@
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 
 
 public class LogicManagerScript : MonoBehaviour
@@ -9,7 +11,7 @@ public class LogicManagerScript : MonoBehaviour
     public Text scoreText;
     public GameObject StartMenu;
     public BlattBehaviourScript Behaviour;
-
+    private int FallRadius = 2;
 
 
 
@@ -19,13 +21,20 @@ public class LogicManagerScript : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) == true)
         {
-            Vector3 mousePos = Input.mousePosition;
-            Debug.Log("Klick bei x:" + mousePos.x);
-            Debug.Log("Klick bei y:" + mousePos.y);
+            //Vector3 mousePos = Input.mousePosition; //alte Variante
 
-            foreach (BlattBehaviourScript blatt in FindObjectsOfType<BlattBehaviourScript>())
+            //ScreenToWorldPoint ist weil Maus und Objects unterschiedliche Koordinatensysteme haben
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Debug.Log("Klick bei x:" + mousePos.x+ "y" + mousePos.y);
+
+            foreach (BlattBehaviourScript blatt in FindObjectsByType<BlattBehaviourScript>(FindObjectsSortMode.None))
             {
-                blatt.enableBlattGravity(1f);
+                //Im Radius von FallRadius werden Blätter fallen gelassen, sonst nicht
+                if (Input.GetMouseButton(0) && mousePos.x < blatt.transform.position.x + FallRadius && mousePos.y < blatt.transform.position.y + FallRadius)
+                {
+                    blatt.enableBlattGravity(1f);
+                }
+                
             }
 
         }
@@ -37,5 +46,16 @@ public class LogicManagerScript : MonoBehaviour
         playerScore += scoreToAdd;
         scoreText.text = playerScore.ToString();
         Debug.Log("Score hinzugefügt");
+    }
+
+
+    public void CloseGame()
+    {
+        
+    }
+
+    public void StartGame()
+    {
+
     }
 }

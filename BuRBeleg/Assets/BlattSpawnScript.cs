@@ -10,7 +10,7 @@ public class BlattSpawnScript : MonoBehaviour
     public float widthOffset = 1;
     public int spawnAmount = 1;
 
-    private static int startCount = 0;
+    private static int startCount = 0; //Zähler für Blätter
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -44,16 +44,19 @@ public class BlattSpawnScript : MonoBehaviour
 
     void spawnLeaf(float heightOffset, float widthOffset, int i)
     {
+        //zufällige Position für neues Blatt
         Vector3 pos = new Vector3(
-            Random.Range(-11f, -5.2f),     //Koordinaten breite Baumkrone
-            Random.Range(2.7f, -1.14f),  //Koordinaten Höhe Baumkrone
+            Random.Range(-11f, -5.2f),      //Koordinaten breite Baumkrone
+            Random.Range(2.7f, -1.14f),     //Koordinaten Höhe Baumkrone
             0
         );
 
+        //Blatt wird erstellt
         GameObject leaf = Instantiate(Blatt, pos, Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
-        Debug.Log("Spawned"+ i+ " at: " + pos);
+        Debug.Log("Spawned "+ i+ " at: " + pos);
     }
 
+    //alte Version
     /*
     void spawnLeaf(float heightOffset, float widthOffset)
     {
