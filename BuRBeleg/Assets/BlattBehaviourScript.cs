@@ -4,7 +4,7 @@ using System.Collections;
 
 public class BlattBehaviourScript : MonoBehaviour
 {
-
+    public GameObject Blatt;
     private Rigidbody2D BlattBody;
     public LogicManagerScript logic;
 
@@ -72,6 +72,6 @@ public class BlattBehaviourScript : MonoBehaviour
     {
         enableBlattGravity(1f);
         //muss noch gemacht werden
-        //BlattBody.linearVelocity.Set(origin.x - BlattBody.transform.x, origin.y - BlattBody.transform.y);
+        BlattBody.linearVelocity.Set(origin.x - Blatt.transform.position.x, origin.y - Blatt.transform.position.y);
     }
 }

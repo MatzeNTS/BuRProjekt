@@ -32,7 +32,8 @@ public class LogicManagerScript : MonoBehaviour
                 //Im Radius von FallRadius werden Blätter fallen gelassen, sonst nicht
                 if (Input.GetMouseButton(0) && mousePos.x < blatt.transform.position.x + FallRadius && mousePos.y < blatt.transform.position.y + FallRadius)
                 {
-                    blatt.enableBlattGravity(1f);
+                   Vector3 origin = new Vector3 (mousePos.x, mousePos.y, 0);
+                    blatt.Flugrichtung(origin);
                 }
                 
             }
