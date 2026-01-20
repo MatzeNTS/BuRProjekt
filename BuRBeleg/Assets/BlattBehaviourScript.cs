@@ -6,7 +6,7 @@ public class BlattBehaviourScript : MonoBehaviour
 {
 
     private Rigidbody2D BlattBody;
-    private LogicManagerScript logic;
+    public LogicManagerScript logic;
 
     private void Awake()
     {
@@ -22,6 +22,12 @@ public class BlattBehaviourScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        logic = GameObject.FindGameObjectWithTag("Logic")?.GetComponent<LogicManagerScript>();
+        
+
+        if (logic == null)
+            Debug.LogError("LogicManager nicht gefunden!", this);
+
 
         if (BlattBody == null)
         {
@@ -45,14 +51,15 @@ public class BlattBehaviourScript : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Boden")) {
-            Debug.Log("Bodenkontakt");
-            Invoke("BlattDestruction", 4f); 
+            Invoke(nameof(BlattDestruction), 4f);
+            logic.AddScore(1);
         }
  
     }
 
-    void BlattDestruction()
+    public void BlattDestruction()
     {
+        Debug.Log("Blatt wird zerstört");
         Destroy(gameObject);
     }
 }

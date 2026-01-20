@@ -3,6 +3,7 @@ using UnityEngine;
 public class HitboxScoreScript : MonoBehaviour
 {
     public LogicManagerScript logic;
+    public BlattBehaviourScript behaviour;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -19,7 +20,9 @@ public class HitboxScoreScript : MonoBehaviour
     {
         if (collision.gameObject.tag == "Blatt")
         {
-            logic.AddScore(1);
+            Debug.Log("Bodenkontakt mit Hitbox");
+            //logic.AddScore(1);
+            
         }
         ;
     }

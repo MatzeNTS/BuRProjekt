@@ -8,6 +8,7 @@ public class LogicManagerScript : MonoBehaviour
     private int playerScore;
     public Text scoreText;
     public GameObject StartMenu;
+    public BlattBehaviourScript Behaviour;
 
 
 
