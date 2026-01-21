@@ -8,6 +8,13 @@ public class BlattBehaviourScript : MonoBehaviour
     private Rigidbody2D BlattBody;
     public LogicManagerScript logic;
 
+    //Kraft zum Wegstoßen
+    public float pushForce = 5f;
+    //Gravitation nach Wegstoßen
+    public float gravityAfter = 0.3f;
+    //Größe des Anklickradiuses zum Blätter fallen lassen
+    private int FallRadius = 2;
+
     private void Awake()
     {
         BlattBody = GetComponent<Rigidbody2D>();
@@ -24,12 +31,8 @@ public class BlattBehaviourScript : MonoBehaviour
     {
         //Logic script
         logic = GameObject.FindGameObjectWithTag("Logic")?.GetComponent<LogicManagerScript>();
-        
-
         if (logic == null)
             Debug.LogError("LogicManager nicht gefunden!", this);
-
-
         if (BlattBody == null)
         {
             Debug.LogError("Rigidbody2D fehlwt", this);
@@ -38,16 +41,34 @@ public class BlattBehaviourScript : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        if (Input.GetMouseButtonDown(0) == true)
+        {
+            //Vector3 mousePos = Input.mousePosition; //alte Variante
+
+            //ScreenToWorldPoint ist weil Maus und Objects unterschiedliche Koordinatensysteme haben
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Debug.Log("Klick bei x:" + mousePos.x + "y" + mousePos.y);
+
+            foreach (BlattBehaviourScript blatt in FindObjectsByType<BlattBehaviourScript>(FindObjectsSortMode.None))
+            {
+                //Im Radius von FallRadius werden Blätter fallen gelassen, sonst nicht
+                if (Input.GetMouseButton(0) && mousePos.x < blatt.transform.position.x + FallRadius && mousePos.y < blatt.transform.position.y + FallRadius)
+                {
+                    Flugrichtung(mousePos);
+                    Debug.Log("KlickOrigin :" + mousePos);
+                }
+
+            }
+
+        }
     }
 
-    //Bl�tter werden fallen gelassen
-    public void enableBlattGravity(float gravity)
+    //Bl�tter werden fallen gelassen
+    public void enableBlattGravity()
     {
-        BlattBody.gravityScale = gravity;
+        BlattBody.gravityScale = 1f;
     }
 
     //Kollision mit Boden
@@ -60,18 +81,34 @@ public class BlattBehaviourScript : MonoBehaviour
  
     }
 
-    //Blattzerst�rung
+    //Blattzerst�rung
     public void BlattDestruction()
     {
-        Debug.Log("Blatt wird zerst�rt");
+        Debug.Log("Blatt wird zerst�rt");
         Destroy(gameObject);
     }
 
     //wohin Fliegt Blatt bei Mausklick 
-    public void Flugrichtung(Vector3 origin)
+    public void Flugrichtung(Vector3 klickOrigin)
     {
-        enableBlattGravity(1f);
-        //muss noch gemacht werden
-        BlattBody.linearVelocity.Set(origin.x - Blatt.transform.position.x, origin.y - Blatt.transform.position.y);
+        // Physik aktivieren
+        BlattBody.bodyType = RigidbodyType2D.Dynamic;
+        BlattBody.gravityScale = 1f;
+
+        // Richtung vom Klick weg
+        Vector2 direction = (transform.position - klickOrigin);
+        direction += Random.insideUnitCircle * 0.2f;
+
+        // Impuls geben
+        BlattBody.linearVelocity = Vector2.zero;
+        BlattBody.AddForce(direction * pushForce, ForceMode2D.Impulse);
+
+        // Gravitation verzögert aktivieren
+        Invoke(nameof(enableBlattGravity), gravityAfter);
+
+
+        //Vector3 FlightDirection = new Vector3(klickOrigin.x - Blatt.transform.position.x, klickOrigin.y - Blatt.transform.position.y, 0);
+        //Debug.Log("flugrichtung: " + FlightDirection);
+        //BlattBody.linearVelocity.Set(FlightDirection.x, FlightDirection.y);
     }
 }
