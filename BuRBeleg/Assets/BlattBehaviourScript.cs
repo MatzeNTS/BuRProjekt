@@ -77,7 +77,6 @@ public class BlattBehaviourScript : MonoBehaviour
 
         Debug.Log($"Wind click at {klickOrigin} | gustPrefab={(gustPrefab ? gustPrefab.name : "NULL")}", this);
 
-
         BlattBody.bodyType = RigidbodyType2D.Dynamic;
         BlattBody.gravityScale = 1f;
 
