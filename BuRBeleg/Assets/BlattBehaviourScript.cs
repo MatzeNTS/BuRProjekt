@@ -91,24 +91,16 @@ public class BlattBehaviourScript : MonoBehaviour
     //wohin Fliegt Blatt bei Mausklick 
     public void Flugrichtung(Vector3 klickOrigin)
     {
-        // Physik aktivieren
+        //Dynamic damit linearVelocity funktioniert
         BlattBody.bodyType = RigidbodyType2D.Dynamic;
         BlattBody.gravityScale = 1f;
 
-        // Richtung vom Klick weg
+        //Richtung vom Klick weg
         Vector2 direction = (transform.position - klickOrigin);
         direction += Random.insideUnitCircle * 0.2f;
 
-        // Impuls geben
+        //Windstoß geben
         BlattBody.linearVelocity = Vector2.zero;
         BlattBody.AddForce(direction * pushForce, ForceMode2D.Impulse);
-
-        // Gravitation verzögert aktivieren
-        Invoke(nameof(enableBlattGravity), gravityAfter);
-
-
-        //Vector3 FlightDirection = new Vector3(klickOrigin.x - Blatt.transform.position.x, klickOrigin.y - Blatt.transform.position.y, 0);
-        //Debug.Log("flugrichtung: " + FlightDirection);
-        //BlattBody.linearVelocity.Set(FlightDirection.x, FlightDirection.y);
     }
 }
