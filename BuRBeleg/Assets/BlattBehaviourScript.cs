@@ -15,6 +15,7 @@ public class BlattBehaviourScript : MonoBehaviour
     public float gravityAfter = 0.3f;
     //Größe des Anklickradiuses zum Blätter fallen lassen
     private int FallRadius = 2;
+    private bool hasTouchedFloor = false;
 
     private void Awake()
     {
@@ -75,9 +76,10 @@ public class BlattBehaviourScript : MonoBehaviour
     //Kollision mit Boden
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("World")) {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("World") && !hasTouchedFloor) {
             Invoke(nameof(BlattDestruction), 4f);
             logic.AddScore(1);
+            hasTouchedFloor = true;
         }
  
     }
