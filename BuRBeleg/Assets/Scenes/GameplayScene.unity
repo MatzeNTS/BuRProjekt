@@ -571,6 +571,7 @@ GameObject:
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
   - component: {fileID: 519420030}
+  - component: {fileID: 519420033}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -696,6 +697,30 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &519420033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c88f5cead0c0b2a4eb05b5900433f8d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.2D.Runtime::UnityEngine.Rendering.Universal.PixelPerfectCamera
+  m_ComponentVersion: 1
+  m_AssetsPPU: 100
+  m_RefResolutionX: 1920
+  m_RefResolutionY: 1080
+  m_CropFrame: 0
+  m_GridSnapping: 0
+  m_FilterMode: 0
+  m_UpscaleRT: 0
+  m_PixelSnapping: 0
+  m_CropFrameX: 0
+  m_CropFrameY: 0
+  m_StretchFill: 0
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -849,11 +874,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6679788425791886494, guid: 3bd67ae024e90ef498868e64e6a7e851, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.89
+      value: -4.13
       objectReference: {fileID: 0}
     - target: {fileID: 6679788425791886494, guid: 3bd67ae024e90ef498868e64e6a7e851, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.14
+      value: -1.06
       objectReference: {fileID: 0}
     - target: {fileID: 6679788425791886494, guid: 3bd67ae024e90ef498868e64e6a7e851, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1187,7 +1212,7 @@ GameObject:
   - component: {fileID: 961152926}
   - component: {fileID: 961152925}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1498,7 +1523,7 @@ GameObject:
   - component: {fileID: 1767734020}
   - component: {fileID: 1767734022}
   - component: {fileID: 1767734021}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Baum
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1615,7 +1640,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -1659,8 +1684,8 @@ RectTransform:
   - {fileID: 961152924}
   - {fileID: 280594146}
   - {fileID: 373194170}
-  - {fileID: 1767734020}
   - {fileID: 498871157}
+  - {fileID: 1767734020}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

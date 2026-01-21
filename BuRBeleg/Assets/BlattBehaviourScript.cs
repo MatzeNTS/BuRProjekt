@@ -7,9 +7,10 @@ public class BlattBehaviourScript : MonoBehaviour
     public GameObject Blatt;
     private Rigidbody2D BlattBody;
     public LogicManagerScript logic;
+    public BlattSpawnScript spawnScript;
 
     //Kraft zum Wegstoßen
-    public float pushForce = 5f;
+    public float pushForce = 2.5f;
     //Gravitation nach Wegstoßen
     public float gravityAfter = 0.3f;
     //Größe des Anklickradiuses zum Blätter fallen lassen
@@ -74,7 +75,7 @@ public class BlattBehaviourScript : MonoBehaviour
     //Kollision mit Boden
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Boden")) {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("World")) {
             Invoke(nameof(BlattDestruction), 4f);
             logic.AddScore(1);
         }
@@ -86,6 +87,8 @@ public class BlattBehaviourScript : MonoBehaviour
     {
         Debug.Log("Blatt wird zerst�rt");
         Destroy(gameObject);
+        //Blätter von Gesamtcount abziehen
+        spawnScript.blattCount--;
     }
 
     //wohin Fliegt Blatt bei Mausklick 
@@ -97,7 +100,7 @@ public class BlattBehaviourScript : MonoBehaviour
 
         //Richtung vom Klick weg
         Vector2 direction = (transform.position - klickOrigin);
-        direction += Random.insideUnitCircle * 0.2f;
+        direction += Random.insideUnitCircle * 0.2f;//Variation der Richtung
 
         //Windstoß geben
         BlattBody.linearVelocity = Vector2.zero;

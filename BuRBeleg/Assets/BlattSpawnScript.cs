@@ -4,13 +4,14 @@ using static UnityEngine.Audio.ProcessorInstance;
 public class BlattSpawnScript : MonoBehaviour
 {
     public GameObject Blatt;
-    public float spawnRate = 5;
+    public GameObject Baum;
+    public float spawnRate = 2;
     public float timer = 0;
     public float heightOffset = 1;
     public float widthOffset = 1;
     public int spawnAmount = 1;
+    public int blattCount = 0; //Zähler für Blätter
 
-    private static int startCount = 0; //Zähler für Blätter
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -38,7 +39,8 @@ public class BlattSpawnScript : MonoBehaviour
     {
         for (int i = 0; i < spawnAmount; i++)
         {
-            spawnLeaf(heightOffset, widthOffset, i);  
+            spawnLeaf(heightOffset, widthOffset, i);
+            blattCount++; //Blätter zu Gesamtcount hinzufügen
         }
     }
 
@@ -50,6 +52,7 @@ public class BlattSpawnScript : MonoBehaviour
             Random.Range(2.7f, -1.14f),     //Koordinaten Höhe Baumkrone
             0
         );
+        
 
         //Blatt wird erstellt
         GameObject leaf = Instantiate(Blatt, pos, Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
