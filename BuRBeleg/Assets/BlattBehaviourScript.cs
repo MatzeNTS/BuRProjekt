@@ -11,8 +11,6 @@ public class BlattBehaviourScript : MonoBehaviour
 
     //Kraft zum Wegstoßen
     public float pushForce = 2.5f;
-    //Gravitation nach Wegstoßen
-    public float gravityAfter = 0.3f;
     //Größe des Anklickradiuses zum Blätter fallen lassen
     private int FallRadius = 2;
     private bool hasTouchedFloor = false;

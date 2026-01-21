@@ -108,6 +108,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   Blatt: {fileID: 175291718646558091}
   logic: {fileID: 0}
+  spawnScript: {fileID: 0}
+  pushForce: 2.5
+  gravityAfter: 0.3
+  swayStrength: 0.5
+  swaySpeed: 1.5
 --- !u!50 &6200387125287880058
 Rigidbody2D:
   serializedVersion: 5

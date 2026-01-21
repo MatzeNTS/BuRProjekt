@@ -659,9 +659,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0
-    width: 1
-    height: 1
+    y: -0.37546936
+    width: 0.5391744
+    height: 1.3516896
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -713,7 +713,7 @@ MonoBehaviour:
   m_AssetsPPU: 100
   m_RefResolutionX: 1920
   m_RefResolutionY: 1080
-  m_CropFrame: 0
+  m_CropFrame: 2
   m_GridSnapping: 0
   m_FilterMode: 0
   m_UpscaleRT: 0
@@ -874,11 +874,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6679788425791886494, guid: 3bd67ae024e90ef498868e64e6a7e851, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.13
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6679788425791886494, guid: 3bd67ae024e90ef498868e64e6a7e851, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.06
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6679788425791886494, guid: 3bd67ae024e90ef498868e64e6a7e851, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1662,7 +1662,7 @@ GameObject:
   - component: {fileID: 1677573253}
   - component: {fileID: 1677573252}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Upgrade1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
