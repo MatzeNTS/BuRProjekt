@@ -1,37 +1,49 @@
 using UnityEngine;
-using static UnityEngine.Audio.ProcessorInstance;
 
 public class BlattSpawnScript : MonoBehaviour
 {
+    [Header("Prefabs / References")]
     public GameObject Blatt;
     public GameObject Baum;
-    public float spawnRate = 2;
-    public float timer = 0;
-    public float heightOffset = 1;
-    public float widthOffset = 1;
+
+    [Tooltip("Optional: Wenn gesetzt, werden die Bounds dieses Colliders als Spawn-Area genutzt (empfohlen).")]
+    public BoxCollider2D spawnArea;
+
+    [Tooltip("Fallback: Wenn kein spawnArea gesetzt ist, werden die Bounds vom SpriteRenderer des Baums genutzt.")]
+    public SpriteRenderer baumRenderer;
+
+    [Header("Spawning")]
+    public float spawnRate = 2f;
     public int spawnAmount = 1;
-    public int blattCount = 0; //Zähler für Blätter
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [Tooltip("Wie weit die Bounds nach innen geschrumpft werden (damit nicht am Rand gespawnt wird).")]
+    public Vector2 innerPadding = new Vector2(0.2f, 0.2f);
+
+    private float timer = 0f;
+    public int blattCount = 0;
+
+    void Awake()
     {
-        Debug.Log("Spawner gestartet: " + gameObject.name);
-        Debug.Log("Parameter spawnAmount = " + spawnAmount);
-        spawnLeaves();
+        // Fallbacks automatisch finden (minimal invasiv)
+        if (Baum != null && baumRenderer == null)
+            baumRenderer = Baum.GetComponent<SpriteRenderer>();
 
+        if (spawnArea == null && Baum != null)
+            spawnArea = Baum.GetComponent<BoxCollider2D>(); // falls ihr einen Collider als Kronen-Area nutzt
     }
 
-    // Update is called once per frame
+    void Start()
+    {
+        spawnLeaves();
+    }
+
     void Update()
     {
-        if (timer < spawnRate)
-        {
-            timer += Time.deltaTime; //Zeit zwischen Frames wird zum Timer dazugezählt, unterschiedliche FPS beeinflussen Spiel nicht
-        }
-        else
+        timer += Time.deltaTime;
+        if (timer >= spawnRate)
         {
             spawnLeaves();
-            timer = 0;
+            timer = 0f;
         }
     }
 
@@ -39,42 +51,56 @@ public class BlattSpawnScript : MonoBehaviour
     {
         for (int i = 0; i < spawnAmount; i++)
         {
-            spawnLeaf(heightOffset, widthOffset, i);
-            blattCount++; //Blätter zu Gesamtcount hinzufügen
+            SpawnOneLeaf(i);
+            blattCount++;
         }
     }
 
-    void spawnLeaf(float heightOffset, float widthOffset, int i)
+    void SpawnOneLeaf(int index)
     {
-        //zufällige Position für neues Blatt
-        Vector3 pos = new Vector3(
-            Random.Range(-11f, -5.2f),      //Koordinaten breite Baumkrone
-            Random.Range(2.7f, -1.14f),     //Koordinaten Höhe Baumkrone
-            0
-        );
-        
+        Bounds b;
 
-        //Blatt wird erstellt
-        GameObject leaf = Instantiate(Blatt, pos, Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
-        Debug.Log("Spawned "+ i+ " at: " + pos);
+        if (spawnArea != null)
+        {
+            b = spawnArea.bounds;
+        }
+        else if (baumRenderer != null)
+        {
+            b = baumRenderer.bounds;
+        }
+        else if (Baum != null)
+        {
+            // Notfall-Fallback um den Baum herum
+            b = new Bounds(Baum.transform.position, new Vector3(4f, 3f, 0f));
+        }
+        else
+        {
+            Debug.LogError("Kein Baum / spawnArea / Renderer gesetzt – kann keine Spawn-Area bestimmen.", this);
+            return;
+        }
+
+        float minX = b.min.x + innerPadding.x;
+        float maxX = b.max.x - innerPadding.x;
+        float minY = b.min.y + innerPadding.y;
+        float maxY = b.max.y - innerPadding.y;
+
+        Vector3 pos = new Vector3(
+            Random.Range(minX, maxX),
+            Random.Range(minY, maxY),
+            0f
+        );
+
+        GameObject leaf = Instantiate(Blatt, pos, Quaternion.Euler(0f, 0f, Random.Range(0f, 360f)));
+
+        // Wichtig: Referenz setzen, sonst knallt BlattDestruction beim Decrement
+        var behaviour = leaf.GetComponent<BlattBehaviourScript>();
+        if (behaviour != null)
+            behaviour.spawnScript = this;
     }
 
-    //alte Version
-    /*
-    void spawnLeaf(float heightOffset, float widthOffset)
+    // Für sauberen Count (statt direkt von außen blattCount--)
+    public void NotifyLeafDestroyed()
     {
-        float lowestPoint = transform.position.y - heightOffset; //Position Höhe
-        float highestPoint =  transform.position.y + heightOffset;
-        float leftestPoint = transform.position.x - widthOffset; //Position Seitlich
-        float rightestPoint = transform.position.x + widthOffset;
-        Debug.Log("Y-Koordinate: " + transform.position);
-        Debug.Log("X-Koordinate: " + transform.position);
-
-        GameObject leaf = Instantiate(Blatt, new Vector3(Random.Range(leftestPoint, rightestPoint), Random.Range(lowestPoint, highestPoint), 0), Quaternion.identity, null); //null = kein parent
-        leaf.GetComponent<BlattBehaviourScript>().enableBlattGravity(0f);
-        leaf.transform.SetParent(null);
-
-        Debug.Log("Spawn: " + leaf.transform.position);
-    }*/
-
+        blattCount = Mathf.Max(0, blattCount - 1);
+    }
 }
