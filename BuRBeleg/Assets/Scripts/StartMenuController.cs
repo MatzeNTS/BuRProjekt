@@ -9,6 +9,8 @@ public class StartMenuController : MonoBehaviour
     [SerializeField] private Button startButton;
     [SerializeField] private Button exitButton;
     [SerializeField] private CanvasGroup startMenuCanvasGroup; // <—
+    [SerializeField] private CanvasGroup startButtonGroup;
+    [SerializeField] private CanvasGroup exitButtonGroup;
     [SerializeField] private GameObject hudRoot; // z.B. CanvasHUD
 
     [Header("Fade")]
@@ -31,8 +33,11 @@ public class StartMenuController : MonoBehaviour
         if (cam == null) cam = Camera.main;
 
         // Auto-Grab CanvasGroup, falls nicht gesetzt
-        if (startMenuCanvasGroup == null && startMenuRoot != null)
-            startMenuCanvasGroup = startMenuRoot.GetComponent<CanvasGroup>();
+        if (startButtonGroup == null && startButton != null)
+            startButtonGroup = startButton.GetComponent<CanvasGroup>() ?? startButton.gameObject.AddComponent<CanvasGroup>();
+
+        if (exitButtonGroup == null && exitButton != null)
+            exitButtonGroup = exitButton.GetComponent<CanvasGroup>() ?? exitButton.gameObject.AddComponent<CanvasGroup>();
 
         if (cameraStartTarget != null && cam != null)
         {
@@ -74,8 +79,17 @@ public class StartMenuController : MonoBehaviour
     private IEnumerator StartGameRoutine()
     {
         // 1) Fade Out (Menü bleibt noch da, wird nur transparent)
-        if (startMenuCanvasGroup != null && fadeOutDuration > 0f)
-            yield return FadeCanvasGroup(startMenuCanvasGroup, 1f, 0f, fadeOutDuration);
+        if (fadeOutDuration > 0f)
+        {
+            // Root-Fade (wenn vorhanden)
+            if (startMenuCanvasGroup != null)
+                yield return FadeCanvasGroup(startMenuCanvasGroup, 1f, 0f, fadeOutDuration);
+            else
+            {
+                // Fallback: Buttons einzeln faden (parallel)
+                yield return FadeButtonsParallel(fadeOutDuration);
+            }
+        }
 
         // 2) Menü deaktivieren (damit es wirklich weg ist)
         if (startMenuRoot != null)
@@ -93,6 +107,29 @@ public class StartMenuController : MonoBehaviour
         if (blattSpawnerScript != null)
             blattSpawnerScript.enabled = true;
     }
+
+    private IEnumerator FadeButtonsParallel(float duration)
+    {
+        float t = 0f;
+        float startA = startButtonGroup != null ? startButtonGroup.alpha : 1f;
+        float exitA = exitButtonGroup != null ? exitButtonGroup.alpha : 1f;
+
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            float p = Mathf.Clamp01(t / duration);
+            p = p * p * (3f - 2f * p);
+
+            if (startButtonGroup != null) startButtonGroup.alpha = Mathf.Lerp(startA, 0f, p);
+            if (exitButtonGroup != null) exitButtonGroup.alpha = Mathf.Lerp(exitA, 0f, p);
+
+            yield return null;
+        }
+
+        if (startButtonGroup != null) startButtonGroup.alpha = 0f;
+        if (exitButtonGroup != null) exitButtonGroup.alpha = 0f;
+    }
+
 
     private IEnumerator FadeCanvasGroup(CanvasGroup cg, float from, float to, float duration)
     {

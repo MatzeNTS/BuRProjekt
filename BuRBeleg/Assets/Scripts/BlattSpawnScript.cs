@@ -6,25 +6,31 @@ public class BlattSpawnScript : MonoBehaviour
     public GameObject Blatt;
     public GameObject Baum;
 
-    [Tooltip("Optional: Wenn gesetzt, werden die Bounds dieses Colliders als Spawn-Area genutzt (empfohlen).")]
+    [Tooltip("CrownArea (BoxCollider2D) – ab maxLevel wird diese als Spawn-Area genutzt.")]
+    public BoxCollider2D crownArea;
+
+    [Tooltip("Fallback: Wenn crownArea nicht gesetzt ist, wird spawnArea genutzt (z.B. Baum-BoxCollider2D).")]
     public BoxCollider2D spawnArea;
 
-    [Tooltip("Fallback: Wenn kein spawnArea gesetzt ist, werden die Bounds vom SpriteRenderer des Baums genutzt.")]
+    [Tooltip("Fallback: Wenn kein Collider gesetzt, werden die Bounds vom SpriteRenderer des Baums genutzt.")]
     public SpriteRenderer baumRenderer;
 
     [Header("Spawning")]
     [Tooltip("Zeit (Sekunden) zwischen Spawn-Wellen.")]
     public float spawnRate = 2f;
 
-    [Tooltip("Wie viele Blätter pro Spawn-Welle erzeugt werden.")]
+    [Tooltip("Baumlevel / Upgrade-Level. Steuert Spots vs CrownArea.\nBis presetMaxLevel: Preset-Spots. Ab presetMaxLevel: CrownArea-Random.")]
     public int spawnAmount = 1;
 
     [Tooltip("Wie weit die Bounds nach innen geschrumpft werden (damit nicht am Rand gespawnt wird).")]
     public Vector2 innerPadding = new Vector2(0.2f, 0.2f);
 
-    [Header("Preset-Spots (Baumlevel = spawnAmount)")]
-    [Tooltip("Wenn aktiv: Blätter werden an festen Spots gespawnt. Je höher spawnAmount, desto mehr Spots sind 'freigeschaltet'.")]
+    [Header("Preset-Spots")]
+    [Tooltip("Wenn aktiv: Blätter werden an festen Spots gespawnt (nur bis presetMaxLevel).")]
     public bool usePresetSpots = true;
+
+    [Tooltip("Ab diesem Level (inkl.) wird NICHT mehr an Spots gespawnt, sondern random in der CrownArea.")]
+    public int presetMaxLevel = 5;
 
     [System.Serializable]
     public struct SpawnSpot
@@ -54,6 +60,15 @@ public class BlattSpawnScript : MonoBehaviour
         if (Baum != null && baumRenderer == null)
             baumRenderer = Baum.GetComponent<SpriteRenderer>();
 
+        // Nicht automatisch crownArea setzen, weil das ein Child ist und bewusst zugewiesen werden soll.
+        // Aber wir versuchen optional, ein Child namens "CrownArea" zu finden.
+        if (crownArea == null && Baum != null)
+        {
+            Transform t = Baum.transform.Find("CrownArea");
+            if (t != null) crownArea = t.GetComponent<BoxCollider2D>();
+        }
+
+        // spawnArea als weiterer Fallback (z.B. Baum-BoxCollider2D)
         if (spawnArea == null && Baum != null)
             spawnArea = Baum.GetComponent<BoxCollider2D>();
     }
@@ -85,14 +100,32 @@ public class BlattSpawnScript : MonoBehaviour
     int GetUnlockedSpotCount()
     {
         if (spots == null) return 0;
-
-        // spawnAmount ist bei euch das Baum-Upgrade/Level (LogicManager erhöht spawnAmount)
         return Mathf.Clamp(spawnAmount, 0, spots.Length);
+    }
+
+    bool ShouldUseCrownArea()
+    {
+        // Ab presetMaxLevel (inkl.) -> CrownArea
+        return spawnAmount >= presetMaxLevel;
     }
 
     void SpawnOneLeaf(int index)
     {
-        // 1) Preset-Spots: zufällig aus den aktuell freigeschalteten Spots
+        // A) Ab Level 5: CrownArea random (keine Spots mehr)
+        if (ShouldUseCrownArea())
+        {
+            if (crownArea == null)
+            {
+                Debug.LogWarning("spawnAmount >= presetMaxLevel, aber crownArea ist nicht gesetzt. Fallback auf spawnArea/renderer.", this);
+                SpawnRandomInFallbackBounds();
+                return;
+            }
+
+            SpawnRandomInBounds(crownArea.bounds);
+            return;
+        }
+
+        // B) Bis Level 4: Preset-Spots wie bisher
         int unlocked = GetUnlockedSpotCount();
         if (usePresetSpots && unlocked > 0)
         {
@@ -104,7 +137,12 @@ public class BlattSpawnScript : MonoBehaviour
             return;
         }
 
-        // 2) Fallback: random innerhalb Bounds (dev-Logik)
+        // C) Falls Preset-Spots ausgeschaltet: random in Fallback-Bounds (wie vorher)
+        SpawnRandomInFallbackBounds();
+    }
+
+    void SpawnRandomInFallbackBounds()
+    {
         Bounds b;
 
         if (spawnArea != null)
@@ -115,10 +153,15 @@ public class BlattSpawnScript : MonoBehaviour
             b = new Bounds(Baum.transform.position, new Vector3(4f, 3f, 0f));
         else
         {
-            Debug.LogError("Kein Baum / spawnArea / Renderer gesetzt – kann keine Spawn-Area bestimmen.", this);
+            Debug.LogError("Kein Baum / Collider / Renderer gesetzt – kann keine Spawn-Area bestimmen.", this);
             return;
         }
 
+        SpawnRandomInBounds(b);
+    }
+
+    void SpawnRandomInBounds(Bounds b)
+    {
         float minX = b.min.x + innerPadding.x;
         float maxX = b.max.x - innerPadding.x;
         float minY = b.min.y + innerPadding.y;
@@ -133,7 +176,6 @@ public class BlattSpawnScript : MonoBehaviour
     {
         if (leaf == null) return;
 
-        // Wichtig: Referenz setzen, sonst knallt BlattDestruction beim Decrement
         var behaviour = leaf.GetComponent<BlattBehaviourScript>();
         if (behaviour != null)
             behaviour.spawnScript = this;
