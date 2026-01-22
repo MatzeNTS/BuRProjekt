@@ -19,7 +19,7 @@ public class BaumManagerScript : MonoBehaviour
 
     [Header("Spawn Areas")]
     [SerializeField] private BoxCollider2D crownAreaBig;   // Baum/CrownArea
-    [SerializeField] private BoxCollider2D fallbackSmall;  // optional (SmallTree Collider), sonst null
+    [SerializeField] private BoxCollider2D fallbackSmall;  // SmallTree Collider)
 
 
     [Header("Sound")]
@@ -27,7 +27,7 @@ public class BaumManagerScript : MonoBehaviour
     [SerializeField] private AudioClip upgradeClip;
     [Range(0f, 1f)][SerializeField] private float upgradeVolume = 0.35f;
 
-    [SerializeField] private int bigTreeAtLevel = 5; // <- im Inspector einstellbar (5 oder 6)
+    [SerializeField] private int bigTreeAtLevel = 6; // <- im Inspector einstellbar (5 oder 6)
 
     private void Awake()
     {
@@ -37,11 +37,11 @@ public class BaumManagerScript : MonoBehaviour
         if (sfxSource == null)
             sfxSource = GetComponentInChildren<AudioSource>(true);
 
-        // Auto-Find CrownArea am großen Baum (auch wenn Baum deaktiviert ist)
+        // Auto-Find CrownArea am großen Baum 
         if (crownAreaBig == null && Baum != null)
             crownAreaBig = Baum.GetComponentInChildren<BoxCollider2D>(true);
 
-        // Optional: SmallTree Collider als Fallback (wenn du willst)
+        // Optional: SmallTree Collider als Fallback 
         if (fallbackSmall == null && SmallTree != null)
             fallbackSmall = SmallTree.GetComponentInChildren<BoxCollider2D>(true);
     }
@@ -56,6 +56,8 @@ public class BaumManagerScript : MonoBehaviour
         // Optional: initial binden, damit baseScale korrekt ist
         if (upgradeFx != null && SmallTree != null)
             upgradeFx.Bind(SmallTree.transform, fxAnchorSmall);
+
+        changeTree(1);
     }
 
 
@@ -76,7 +78,7 @@ public class BaumManagerScript : MonoBehaviour
             if (upgradeFx != null)
                 upgradeFx.Bind(SmallTree.transform, fxAnchorSmall);
 
-            //  zurück auf Presets + optional Small-Fallback
+            //  Small-Fallback
             if (spawner != null)
             {
                 spawner.spawnArea = fallbackSmall;  // oder null, dann nimmt er baumRenderer.bounds

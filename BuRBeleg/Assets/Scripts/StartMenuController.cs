@@ -8,10 +8,10 @@ public class StartMenuController : MonoBehaviour
     [SerializeField] private GameObject startMenuRoot;
     [SerializeField] private Button startButton;
     [SerializeField] private Button exitButton;
-    [SerializeField] private CanvasGroup startMenuCanvasGroup; // <—
+    [SerializeField] private CanvasGroup startMenuCanvasGroup; 
     [SerializeField] private CanvasGroup startButtonGroup;
     [SerializeField] private CanvasGroup exitButtonGroup;
-    [SerializeField] private GameObject hudRoot; // z.B. CanvasHUD
+    [SerializeField] private GameObject hudRoot; // CanvasHUD
 
     [Header("Fade")]
     [SerializeField] private float fadeOutDuration = 0.25f;
@@ -32,7 +32,7 @@ public class StartMenuController : MonoBehaviour
 
         if (cam == null) cam = Camera.main;
 
-        // Auto-Grab CanvasGroup, falls nicht gesetzt
+        // Auto-Grab CanvasGroup
         if (startButtonGroup == null && startButton != null)
             startButtonGroup = startButton.GetComponent<CanvasGroup>() ?? startButton.gameObject.AddComponent<CanvasGroup>();
 
@@ -66,7 +66,7 @@ public class StartMenuController : MonoBehaviour
         if (startButton != null) startButton.interactable = false;
         if (exitButton != null) exitButton.interactable = false;
 
-        // Direkt Klicks blocken, während Fade/Slide läuft
+        // Direkt Klicks blocken
         if (startMenuCanvasGroup != null)
         {
             startMenuCanvasGroup.interactable = false;
@@ -78,10 +78,10 @@ public class StartMenuController : MonoBehaviour
 
     private IEnumerator StartGameRoutine()
     {
-        // 1) Fade Out (Menü bleibt noch da, wird nur transparent)
+        // 1) Fade Out 
         if (fadeOutDuration > 0f)
         {
-            // Root-Fade (wenn vorhanden)
+            // Root-Fade 
             if (startMenuCanvasGroup != null)
                 yield return FadeCanvasGroup(startMenuCanvasGroup, 1f, 0f, fadeOutDuration);
             else
@@ -91,7 +91,7 @@ public class StartMenuController : MonoBehaviour
             }
         }
 
-        // 2) Menü deaktivieren (damit es wirklich weg ist)
+        // 2) Menü deaktivieren 
         if (startMenuRoot != null)
             startMenuRoot.SetActive(false);
 
@@ -99,7 +99,7 @@ public class StartMenuController : MonoBehaviour
         if (cam != null && cameraGameTarget != null)
             yield return SlideCamera(cam.transform, cameraGameTarget.position, slideDuration);
 
-        // 3.5) HUD anzeigen (JETZT erst)
+        // 3.5) HUD anzeigen 
         if (hudRoot != null)
             hudRoot.SetActive(true);
 

@@ -74,7 +74,7 @@ public class LogicManagerScript : MonoBehaviour
 
             if (timer < IncomeRate)
             {
-                timer += Time.deltaTime; //Zeit zwischen Frames wird zum Timer dazugez�hlt, unterschiedliche FPS beeinflussen Spiel nicht
+                timer += Time.deltaTime; //Zeit zwischen Frames wird zum Timer dazugezaehlt, unterschiedliche FPS beeinflussen Spiel nicht
             }
             else if(passiveActive)
             {

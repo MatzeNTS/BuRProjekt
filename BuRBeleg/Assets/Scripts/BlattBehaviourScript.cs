@@ -65,7 +65,7 @@ public class BlattBehaviourScript : MonoBehaviour
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0f;
 
-        // Nur dieses Blatt prüfen (kein FindObjectsByType mehr)
+        // Nur dieses Blatt prüfen 
         if (Vector2.Distance(mousePos, transform.position) <= fallRadius)
         {
             ApplyWind(mousePos);
@@ -80,7 +80,7 @@ public class BlattBehaviourScript : MonoBehaviour
         BlattBody.bodyType = RigidbodyType2D.Dynamic;
         BlattBody.gravityScale = 1f;
 
-        // Richtung vom Klick weg (normalisiert => Distanz beeinflusst NICHT die Richtung/Stärke)
+        // Richtung vom Klick weg 
         Vector2 dir = (Vector2)(transform.position - klickOrigin);
         float dist = dir.magnitude;
 
@@ -100,7 +100,7 @@ public class BlattBehaviourScript : MonoBehaviour
         BlattBody.linearVelocity = Vector2.zero;
         BlattBody.AddForce(dir * strength, ForceMode2D.Impulse);
 
-        // Wind-VFX (optional)
+        // Wind-VFX 
         if (gustPrefab != null)
         {
             var gust = Instantiate(gustPrefab, klickOrigin, Quaternion.identity);
@@ -122,7 +122,7 @@ public class BlattBehaviourScript : MonoBehaviour
     {
         Destroy(gameObject);
 
-        // sauber runterzählen (kein NullRef mehr)
+        // sauber runterzählen 
         if (spawnScript != null)
             spawnScript.NotifyLeafDestroyed();
     }

@@ -13,6 +13,10 @@ public class TreeUpgradeFXController : MonoBehaviour
     [SerializeField] private float punchInTime = 0.08f;
     [SerializeField] private float punchOutTime = 0.12f;
 
+    [SerializeField] private float maxScale = 2f;
+
+    private Transform current;
+
     private Vector3 baseScale;
     private Coroutine punchRoutine;
 
@@ -31,15 +35,25 @@ public class TreeUpgradeFXController : MonoBehaviour
     /// </summary>
     public void Bind(Transform newTreeVisual, Transform newFxAnchor, ParticleSystem newParticles = null)
     {
-        if (newTreeVisual != null) treeVisual = newTreeVisual;
+        if (newTreeVisual != null && newTreeVisual) {
+            current = newTreeVisual;
+            treeVisual = newTreeVisual;
+
+            baseScale = treeVisual.localScale;
+        } 
+
         if (newFxAnchor != null) fxAnchor = newFxAnchor;
         if (newParticles != null) upgradeParticles = newParticles;
 
-        baseScale = treeVisual.localScale; // <- das war der entscheidende Punkt
     }
 
     public void PlayUpgradeFX()
     {
+
+        if (treeVisual != null) { 
+            treeVisual.localScale = baseScale;
+        }
+
         // Partikel
         if (upgradeParticles != null)
         {
@@ -54,7 +68,7 @@ public class TreeUpgradeFXController : MonoBehaviour
 
     private IEnumerator Punch()
     {
-        Vector3 target = baseScale * punchScale;
+        Vector3 max = baseScale * maxScale;
 
         float t = 0f;
         while (t < punchInTime)
@@ -62,7 +76,12 @@ public class TreeUpgradeFXController : MonoBehaviour
             t += Time.deltaTime;
             float p = Mathf.Clamp01(t / punchInTime);
             p = p * p * (3f - 2f * p);
-            treeVisual.localScale = Vector3.Lerp(baseScale, target, p);
+            
+            treeVisual.localScale = new Vector3(
+                Mathf.Min(treeVisual.localScale.x, max.x),
+                Mathf.Min(treeVisual.localScale.y, max.y),
+                Mathf.Min(treeVisual.localScale.z, max.z)
+            );
             yield return null;
         }
 
@@ -72,11 +91,19 @@ public class TreeUpgradeFXController : MonoBehaviour
             t += Time.deltaTime;
             float p = Mathf.Clamp01(t / punchOutTime);
             p = p * p * (3f - 2f * p);
-            treeVisual.localScale = Vector3.Lerp(target, baseScale, p);
+            treeVisual.localScale = new Vector3(
+                Mathf.Min(treeVisual.localScale.x, max.x),
+                Mathf.Min(treeVisual.localScale.y, max.y),
+                Mathf.Min(treeVisual.localScale.z, max.z)
+            );
             yield return null;
         }
 
-        treeVisual.localScale = baseScale;
+        treeVisual.localScale = new Vector3(
+            Mathf.Min(treeVisual.localScale.x, max.x),
+            Mathf.Min(treeVisual.localScale.y, max.y),
+            Mathf.Min(treeVisual.localScale.z, max.z)
+        );
         punchRoutine = null;
     }
 }
