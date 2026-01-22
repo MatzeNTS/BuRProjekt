@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 6e6decc0fa180c64fbf662a3afc2823f
+guid: 37d8a9d106db5ef46916d76aa2a63b64
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5781445747943558089
-    second: leaf_0
+      213: -5829199852527158875
+    second: dead-tree-1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,17 +96,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: leaf_0
+      name: dead-tree-1_0
       rect:
         serializedVersion: 2
-        x: 235
-        y: 49
-        width: 696
-        height: 696
+        x: 0
+        y: 0
+        width: 800
+        height: 800
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9cb4e5eb642db3050800000000000000
-      internalID: 5781445747943558089
+      spriteID: 5a9fb595e958a1fa0800000000000000
+      internalID: -5829199852527158875
       vertices: []
       indices: 
       edges: []
@@ -135,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      leaf_0: 5781445747943558089
+      dead-tree-1_0: -5829199852527158875
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

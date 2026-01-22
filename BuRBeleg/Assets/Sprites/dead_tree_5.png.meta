@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 27741e90d94bdeb4084a04e953ffd36c
+guid: 4bd96c6766ffd334ba7e66945a7b4a50
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5398198351932669520
-    second: Titel_AutumnClicker(1)_0
+      213: 1622445767061258907
+    second: dead-tree-5_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,17 +96,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Titel_AutumnClicker(1)_0
+      name: dead-tree-5_0
       rect:
         serializedVersion: 2
-        x: 163
+        x: 0
         y: 0
-        width: 1678
-        height: 300
+        width: 800
+        height: 800
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0b144f5233fb515b0800000000000000
-      internalID: -5398198351932669520
+      spriteID: b92c50d34d5148610800000000000000
+      internalID: 1622445767061258907
       vertices: []
       indices: 
       edges: []
@@ -135,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Titel_AutumnClicker(1)_0: -5398198351932669520
+      dead-tree-5_0: 1622445767061258907
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: f61ae3b2af233f1418cf98d17a53b0f2
+guid: 27741e90d94bdeb4084a04e953ffd36c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3097238980987607288
-    second: SpielBeenden(1)_0
+      213: -5398198351932669520
+    second: Titel_AutumnClicker(1)_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,17 +96,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SpielBeenden(1)_0
+      name: Titel_AutumnClicker(1)_0
       rect:
         serializedVersion: 2
-        x: 79
-        y: 7
-        width: 242
-        height: 150
+        x: 163
+        y: 0
+        width: 1678
+        height: 300
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 807adb18e856405d0800000000000000
-      internalID: -3097238980987607288
+      spriteID: 0b144f5233fb515b0800000000000000
+      internalID: -5398198351932669520
       vertices: []
       indices: 
       edges: []
@@ -135,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      SpielBeenden(1)_0: -3097238980987607288
+      Titel_AutumnClicker(1)_0: -5398198351932669520
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
