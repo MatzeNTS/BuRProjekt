@@ -47,5 +47,8 @@ TagManager:
   - name: canvas
     uniqueID: 655666833
     locked: 0
+  - name: effect
+    uniqueID: 4048112741
+    locked: 0
   m_RenderingLayers:
   - Default

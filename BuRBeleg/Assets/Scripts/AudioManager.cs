@@ -14,6 +14,10 @@ public class AudioManager : MonoBehaviour
     [SerializeField, Range(0f, 1f)] private float musicVolume = 0.35f;
     [SerializeField] private float musicFadeIn = 1.5f;
 
+    [Header("Upgrade SFX")]
+    [SerializeField] private AudioClip upgradeClip;
+    [SerializeField, Range(0f, 1f)] private float upgradeVolume = 0.7f;
+
     [Header("Wind Gust SFX (random)")]
     [SerializeField] private AudioClip[] windGustClips; // 3 mp3s reinziehen
     [SerializeField, Range(0f, 1f)] private float gustVolume = 0.6f;
@@ -58,6 +62,24 @@ public class AudioManager : MonoBehaviour
         musicSource.Play();
         StartCoroutine(FadeVolume(musicSource, 0f, musicVolume, musicFadeIn));
     }
+
+    public void PlayUpgrade(Vector3 worldPos)
+    {
+        if (upgradeClip == null) return;
+
+        // Einmaliger OneShot (kein Fade nötig, aber kann man)
+        GameObject go = new GameObject("SFX_Upgrade");
+        go.transform.position = worldPos;
+
+        var src = go.AddComponent<AudioSource>();
+        src.clip = upgradeClip;
+        src.volume = upgradeVolume;
+        src.spatialBlend = 0f;
+        src.Play();
+
+        Destroy(go, upgradeClip.length + 0.1f);
+    }
+
 
     public void StopAmbientMusic(float fadeOutSeconds = 1.0f)
     {
